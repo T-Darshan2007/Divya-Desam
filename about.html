@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About – Divya Desam</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #8B0000;
+    --gold: #C9A84C;
+    --gold-light: #F2D27A;
+    --gold-dark: #8B6914;
+    --cream: #FDF6E3;
+    --dark: #1A0A00;
+    --text-dark: #2C1810;
+    --lotus-pink: #E8748A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 999;
+    background: rgba(253,246,227,0.97);
+    border-bottom: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px;
+    box-shadow: 0 2px 20px rgba(139,0,0,0.12);
+  }
+  .nav-brand {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 1.3rem; color: var(--crimson); letter-spacing: 2px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Cinzel', serif; font-size: 0.9rem;
+    color: var(--text-dark); text-decoration: none; letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--crimson); }
+  .nav-user {
+    font-family: 'Cinzel', serif; font-size: 0.85rem;
+    color: var(--crimson); display: flex; align-items: center; gap: 8px;
+  }
+  .nav-user svg { width: 28px; height: 28px; }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--crimson); border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile drawer */
+  .nav-drawer {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,246,227,0.98); z-index: 998;
+    flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+  }
+  .nav-drawer.open { display: flex; }
+  .nav-drawer ul { list-style: none; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .nav-drawer ul a {
+    font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--text-dark);
+    text-decoration: none; letter-spacing: 2px; transition: color 0.3s;
+  }
+  .nav-drawer ul a:hover, .nav-drawer ul a.active { color: var(--crimson); }
+  .nav-drawer .drawer-user {
+    font-family: 'Cinzel', serif; font-size: 0.9rem;
+    color: var(--crimson); display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid rgba(201,168,76,0.3); padding-top: 24px;
+  }
+  .nav-drawer .drawer-user svg { width: 26px; height: 26px; }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    margin-top: 70px;
+    height: 480px;
+    background: linear-gradient(135deg, #1A0A00 0%, #3D1A00 40%, #6B2800 70%, #8B0000 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  /* Decorative mandala rings */
+  .hero-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+  .hero-ring:nth-child(2) { width: 600px; height: 600px; animation-delay: 0s; }
+  .hero-ring:nth-child(3) { width: 500px; height: 500px; animation-delay: 0.8s; }
+  .hero-ring:nth-child(4) { width: 400px; height: 400px; animation-delay: 1.6s; }
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(1.03); }
+  }
+  .hero-content { position: relative; text-align: center; }
+  .hero-label {
+    font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.85rem;
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 16px;
+    opacity: 0; animation: fadeUp 1s 0.3s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: var(--gold-light); line-height: 1.1;
+    text-shadow: 0 0 60px rgba(201,168,76,0.4);
+    opacity: 0; animation: fadeUp 1s 0.6s forwards;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    color: rgba(253,246,227,0.75); font-size: 1.25rem; font-style: italic;
+    margin-top: 16px; max-width: 600px;
+    opacity: 0; animation: fadeUp 1s 0.9s forwards;
+  }
+  .hero-divider {
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+    opacity: 0; animation: fadeUp 1s 1.1s forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 90px 0; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  .section-tag {
+    font-family: 'Cinzel', serif; color: var(--gold-dark);
+    font-size: 0.75rem; letter-spacing: 5px; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--crimson); line-height: 1.2; margin-bottom: 8px;
+  }
+  .gold-bar {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px; margin-bottom: 30px;
+  }
+  p.body-text {
+    font-size: 1.2rem; line-height: 1.95; color: #3D1A00;
+    font-weight: 300;
+  }
+
+  /* ── ORIGIN ── */
+  .origin { background: var(--cream); }
+  .origin-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .origin-visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+  .origin-circle {
+    width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #8B0000, #3D1A00);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; box-shadow: 0 20px 80px rgba(139,0,0,0.3);
+  }
+  .origin-circle::before {
+    content: ''; position: absolute; inset: -12px; border-radius: 50%;
+    border: 2px dashed rgba(201,168,76,0.4);
+    animation: spin 30s linear infinite;
+  }
+  .origin-circle::after {
+    content: ''; position: absolute; inset: -24px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .origin-number {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 5rem; color: var(--gold-light);
+    line-height: 1; text-align: center;
+    text-shadow: 0 0 40px rgba(201,168,76,0.5);
+  }
+  .origin-number span {
+    display: block; font-size: 1rem; color: var(--gold);
+    letter-spacing: 4px; margin-top: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── AZHWAR GRID ── */
+  .azhwars { background: linear-gradient(180deg, #FDF6E3 0%, #F5E6C8 100%); }
+  .azhwar-intro { max-width: 700px; margin-bottom: 60px; }
+  .azhwar-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .azhwar-card {
+    background: white; border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px; padding: 28px 22px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .azhwar-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%; background: var(--crimson);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.3s;
+  }
+  .azhwar-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(139,0,0,0.12); }
+  .azhwar-card:hover::before { transform: scaleY(1); }
+  .card-num {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    color: var(--gold-dark); letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .card-name {
+    font-family: 'Cinzel', serif; font-size: 1rem;
+    color: var(--crimson); margin-bottom: 6px;
+  }
+  .card-detail {
+    font-size: 0.9rem; color: #6B4226; line-height: 1.6;
+  }
+
+  /* ── SIGNIFICANCE STRIPS ── */
+  .significance { background: #1A0A00; padding: 90px 0; }
+  .significance .section-title { color: var(--gold-light); }
+  .significance .section-tag { color: var(--gold); }
+  .sig-strips { display: flex; flex-direction: column; gap: 2px; margin-top: 50px; }
+  .sig-strip {
+    display: flex; align-items: stretch;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.1);
+    overflow: hidden; transition: background 0.3s;
+  }
+  .sig-strip:hover { background: rgba(201,168,76,0.06); }
+  .sig-num {
+    width: 80px; min-width: 80px;
+    background: rgba(139,0,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 1.4rem; color: var(--gold); padding: 28px 0;
+  }
+  .sig-body { padding: 28px 36px; }
+  .sig-title {
+    font-family: 'Cinzel', serif; color: var(--gold-light);
+    font-size: 1rem; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .sig-text { color: rgba(253,246,227,0.65); font-size: 1.05rem; line-height: 1.8; }
+
+  /* ── SCRIPTURE QUOTE ── */
+  .quote-section {
+    background: linear-gradient(135deg, var(--crimson), #5C0000);
+    padding: 80px 0; position: relative; overflow: hidden;
+  }
+  .quote-section::before {
+    content: '❝';
+    position: absolute; top: -30px; left: 50px;
+    font-size: 18rem; color: rgba(255,255,255,0.04);
+    font-family: serif; line-height: 1;
+  }
+  .quote-inner { max-width: 800px; margin: 0 auto; text-align: center; position: relative; }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--gold-light); line-height: 1.7; font-style: italic;
+    margin-bottom: 24px;
+  }
+  .quote-source {
+    font-family: 'Cinzel', serif; color: rgba(253,246,227,0.6);
+    font-size: 0.8rem; letter-spacing: 3px;
+  }
+
+  /* ── MISSION ── */
+  .mission { background: var(--cream); }
+  .mission-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 36px; margin-top: 50px; }
+  .mission-card {
+    background: white; padding: 40px 32px;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+  }
+  .mission-card:hover { transform: translateY(-8px); }
+  .mission-icon {
+    font-size: 2.5rem; margin-bottom: 20px; display: block;
+  }
+  .mission-card h3 {
+    font-family: 'Cinzel', serif; color: var(--crimson);
+    font-size: 1.05rem; margin-bottom: 14px; letter-spacing: 0.5px;
+  }
+  .mission-card p { font-size: 1.05rem; line-height: 1.8; color: #4A2010; }
+
+  /* ── TEAM / CREDITS ── */
+  .team { background: #F5E6C8; padding: 90px 0; }
+  .team-inner { max-width: 700px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark); color: rgba(253,246,227,0.5);
+    padding: 40px 48px; display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1.5px;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 12px 20px; }
+    .nav-links, .nav-user { display: none; }
+    .nav-hamburger { display: flex; }
+
+    /* Layout */
+    .container { padding: 0 16px; }
+    section { padding: 60px 0; }
+
+    /* Hero */
+    .hero { height: 360px; margin-top: 56px; }
+
+    /* Origin */
+    .origin-grid { grid-template-columns: 1fr; gap: 40px; }
+    .origin-circle { width: 240px; height: 240px; }
+    .origin-number { font-size: 3.5rem; }
+
+    /* Significance strips */
+    .sig-body { padding: 18px 16px; }
+    .sig-num { width: 56px; min-width: 56px; font-size: 1.1rem; }
+
+    /* Quote */
+    .quote-section { padding: 50px 20px; }
+    .quote-inner { padding: 0; }
+
+    /* Azhwar cards */
+    .azhwar-cards { grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Mission */
+    .mission-grid { grid-template-columns: 1fr; gap: 20px; }
+
+    /* Footer */
+    footer { flex-direction: column; gap: 10px; text-align: center; padding: 28px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">Divya Desam</a>
+  <ul class="nav-links">
+    <li><a href="home.html">Home</a></li>
+    <li><a href="temples.html">Temples</a></li>
+    <li><a href="map.html">Map</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <div class="nav-user">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <span id="navUsername">Devoted Seeker</span>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <ul>
+    <li><a href="home.html">Home</a></li>
+    <li><a href="temples.html">Temples</a></li>
+    <li><a href="map.html">Map</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <div class="drawer-user">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <span id="drawerUsername">Devoted Seeker</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-content">
+    <p class="hero-label">Sacred Knowledge</p>
+    <h1>About Divya Desam</h1>
+    <p class="hero-sub">108 celestial abodes of Lord Vishnu, immortalized in Tamil verse by the Azhwar saints</p>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<!-- ORIGIN -->
+<section class="origin">
+  <div class="container">
+    <div class="origin-grid reveal">
+      <div class="origin-text">
+        <span class="section-tag">Sacred Origins</span>
+        <h2 class="section-title">What Are the Divya Desams?</h2>
+        <div class="gold-bar"></div>
+        <p class="body-text">
+          The Divya Desams are 108 temples of Lord Vishnu — Perumal — located across the Indian subcontinent and one in the celestial realm. These sacred shrines are considered <em>divya</em> (divine) because they were sung in devotional praise by the twelve Azhwar saints, mystic poet-saints who lived between the 6th and 9th centuries CE.
+        </p>
+        <br>
+        <p class="body-text">
+          The hymns composed by the Azhwars, collectively known as the <em>Nalayira Divya Prabandham</em> (4,000 sacred verses), form the bedrock of Sri Vaishnavism — one of Hinduism's most devotion-rich traditions. Every temple enshrined in these hymns carries the spiritual vibration of the saint's ecstatic experience of the divine.
+        </p>
+      </div>
+      <div class="origin-visual">
+        <div class="origin-circle">
+          <div class="origin-number">
+            108
+            <span>Divya Desams</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <div class="quote-inner">
+    <p class="quote-text">
+      "மன்னு மாடக் கோவில் மாமணிவண்ணா உன்னை விட்டு என்னால் யான் ஆற்றகிற்பேன்" — Nammazhwar, Tiruvaymozhi
+    </p>
+    <p class="quote-source">Nalayira Divya Prabandham · 4000 Sacred Verses</p>
+  </div>
+</div>
+
+<!-- AZHWARS -->
+<section class="azhwars">
+  <div class="container">
+    <div class="azhwar-intro reveal">
+      <span class="section-tag">The Twelve Mystic Poets</span>
+      <h2 class="section-title">The Azhwar Saints</h2>
+      <div class="gold-bar"></div>
+      <p class="body-text">
+        The word <em>Azhwar</em> means "one who is immersed in God." These twelve saint-poets experienced transcendent unity with Lord Vishnu and channelled that bliss into immortal Tamil verses. Their hymns sanctified the 108 temples, giving each shrine its "divya desam" status.
+      </p>
+    </div>
+    <div class="azhwar-cards reveal">
+      <div class="azhwar-card">
+        <div class="card-num">01</div>
+        <div class="card-name">Poigai Azhwar</div>
+        <div class="card-detail">Composed the first centum of Mudal Tiruvandadi</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">02</div>
+        <div class="card-name">Bhoothath Azhwar</div>
+        <div class="card-detail">Author of Irandam Tiruvandadi</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">03</div>
+        <div class="card-name">Pey Azhwar</div>
+        <div class="card-detail">Author of Moondram Tiruvandadi</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">04</div>
+        <div class="card-name">Tirumalisai Azhwar</div>
+        <div class="card-detail">Nanmugan Tiruvandadi & Tiruchchanda Viruththam</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">05</div>
+        <div class="card-name">Nammazhwar</div>
+        <div class="card-detail">Greatest of all; composed Tiruvaymozhi — 1102 verses</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">06</div>
+        <div class="card-name">Madhurakavi Azhwar</div>
+        <div class="card-detail">Devoted exclusively to Nammazhwar</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">07</div>
+        <div class="card-name">Kulasekhara Azhwar</div>
+        <div class="card-detail">King-poet, author of Mukundamala</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">08</div>
+        <div class="card-name">Periyazhwar</div>
+        <div class="card-detail">Father of Andal; sang Tiruppallandu</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">09</div>
+        <div class="card-name">Andal</div>
+        <div class="card-detail">Only woman Azhwar; composed Tiruppavai & Nacchiyar Tirumozhi</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">10</div>
+        <div class="card-name">Thondaradipodi Azhwar</div>
+        <div class="card-detail">Tirumaalai & Thirupalliyeluchi</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">11</div>
+        <div class="card-name">Tiruppaan Azhwar</div>
+        <div class="card-detail">Amalanadipiran — ten verses of intense beauty</div>
+      </div>
+      <div class="azhwar-card">
+        <div class="card-num">12</div>
+        <div class="card-name">Tirumangai Azhwar</div>
+        <div class="card-detail">Most prolific; sang about 88 of the 108 temples</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNIFICANCE -->
+<section class="significance">
+  <div class="container">
+    <span class="section-tag">Why These Temples Matter</span>
+    <h2 class="section-title">Sacred Significance</h2>
+    <div class="gold-bar" style="background: linear-gradient(90deg, var(--gold), transparent);"></div>
+    <div class="sig-strips reveal">
+      <div class="sig-strip">
+        <div class="sig-num">I</div>
+        <div class="sig-body">
+          <div class="sig-title">Divine Validation</div>
+          <p class="sig-text">A temple is classified as a Divya Desam only if it was sung by one of the twelve Azhwars in the Nalayira Divya Prabandham. This poetic canon acts as the supreme authentication of a temple's divinity within the Sri Vaishnava tradition.</p>
+        </div>
+      </div>
+      <div class="sig-strip">
+        <div class="sig-num">II</div>
+        <div class="sig-body">
+          <div class="sig-title">Geographic Span</div>
+          <p class="sig-text">105 temples are in India, 1 in Nepal (Muktinath), 1 in the celestial world (Thiruppaarkadal), and 1 in the soul (Thiruppati). Together they span Tamil Nadu, Andhra Pradesh, Kerala, Uttar Pradesh and beyond.</p>
+        </div>
+      </div>
+      <div class="sig-strip">
+        <div class="sig-num">III</div>
+        <div class="sig-body">
+          <div class="sig-title">Architectural Heritage</div>
+          <p class="sig-text">Many Divya Desam temples are masterpieces of Dravidian architecture, with towering gopurams (gateway towers), intricate sculptures, and sacred tanks that reflect centuries of patronage by Chola, Pandya and Vijayanagara kings.</p>
+        </div>
+      </div>
+      <div class="sig-strip">
+        <div class="sig-num">IV</div>
+        <div class="sig-body">
+          <div class="sig-title">Living Tradition</div>
+          <p class="sig-text">Daily rituals, seasonal festivals and the recitation of the Divya Prabandham continue unbroken for over a thousand years. Pilgrims circumambulate all 108 temples — called <em>Divya Desam Yatra</em> — a lifelong spiritual aspiration for millions of devotees.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission">
+  <div class="container">
+    <span class="section-tag">Our Purpose</span>
+    <h2 class="section-title">About This Project</h2>
+    <div class="gold-bar"></div>
+    <div class="mission-grid reveal">
+      <div class="mission-card">
+        <span class="mission-icon">🏛️</span>
+        <h3>Preserve & Document</h3>
+        <p>We gather verified historical, mythological, and architectural information about all 108 temples, creating a comprehensive digital archive accessible to devotees worldwide.</p>
+      </div>
+      <div class="mission-card">
+        <span class="mission-icon">🗺️</span>
+        <h3>Navigate & Explore</h3>
+        <p>Interactive maps, geolocation, and curated pilgrimage routes help both first-time visitors and seasoned pilgrims plan meaningful temple journeys across India.</p>
+      </div>
+      <div class="mission-card">
+        <span class="mission-icon">🌸</span>
+        <h3>Inspire Devotion</h3>
+        <p>Through sacred imagery, the hymns of the Azhwars, and stories of each temple's presiding deity, we seek to deepen the spiritual connection of every visitor to this site.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 <span>Divya Desam</span> · Sacred Heritage Project</div>
+  <div>Jai Srimannarayana 🙏</div>
+</footer>
+
+<script>
+  // Load username from localStorage
+  const storedName = localStorage.getItem('userName') || 'Seeker';
+  document.getElementById('navUsername').textContent = storedName;
+  document.getElementById('drawerUsername').textContent = storedName;
+
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const navDrawer = document.getElementById('navDrawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navDrawer.classList.toggle('open');
+    document.body.style.overflow = navDrawer.classList.contains('open') ? 'hidden' : '';
+  });
+  // Close drawer on link click
+  navDrawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navDrawer.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger azhwar cards
+  document.querySelectorAll('.azhwar-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 60}ms`;
+  });
+</script>
+</body>
+</html>

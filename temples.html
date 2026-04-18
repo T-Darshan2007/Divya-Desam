@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>108 Temples – Divya Desam</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #8B0000;
+    --gold: #C9A84C;
+    --gold-light: #F2D27A;
+    --gold-dark: #8B6914;
+    --cream: #FDF6E3;
+    --dark: #1A0A00;
+    --card-bg: #FFF8F0;
+    --shadow: rgba(139,0,0,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); font-family: 'Cormorant Garamond', serif; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 999;
+    background: rgba(253,246,227,0.98);
+    border-bottom: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px;
+    box-shadow: 0 2px 20px rgba(139,0,0,0.1);
+    backdrop-filter: blur(10px);
+  }
+  .nav-brand { font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; color: var(--crimson); text-decoration: none; letter-spacing: 2px; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-family: 'Cinzel', serif; font-size: 0.9rem; color: #2C1810; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--crimson); }
+  .nav-user { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--crimson); display: flex; align-items: center; gap: 8px; }
+  .nav-user svg { width: 28px; height: 28px; }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    gap: 5px; background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--crimson); border-radius: 2px; transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile drawer */
+  .nav-drawer {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,246,227,0.98); z-index: 998;
+    flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+  }
+  .nav-drawer.open { display: flex; }
+  .nav-drawer ul { list-style: none; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .nav-drawer ul a {
+    font-family: 'Cinzel', serif; font-size: 1.4rem; color: #2C1810;
+    text-decoration: none; letter-spacing: 2px; transition: color 0.3s;
+  }
+  .nav-drawer ul a:hover, .nav-drawer ul a.active { color: var(--crimson); }
+  .nav-drawer .drawer-user {
+    font-family: 'Cinzel', serif; font-size: 0.9rem;
+    color: var(--crimson); display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid rgba(201,168,76,0.3); padding-top: 24px;
+  }
+  .nav-drawer .drawer-user svg { width: 26px; height: 26px; }
+
+  /* HERO */
+  .temples-hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #3D1A00 50%, #6B2800 100%);
+    padding: 70px 0 60px;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .temples-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent, transparent 30px,
+      rgba(201,168,76,0.03) 30px, rgba(201,168,76,0.03) 60px
+    );
+  }
+  .hero-inner { position: relative; }
+  .temples-hero h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--gold-light);
+    text-shadow: 0 0 60px rgba(201,168,76,0.3);
+    margin-bottom: 14px;
+    animation: fadeDown 0.8s ease forwards;
+  }
+  .temples-hero p {
+    color: rgba(253,246,227,0.65); font-size: 1.2rem; font-style: italic;
+    max-width: 600px; margin: 0 auto;
+    animation: fadeDown 0.8s 0.2s ease forwards; opacity: 0;
+  }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:none; } }
+
+  /* CONTROLS */
+  .controls {
+    background: white;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 20px 40px;
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;
+    position: sticky; top: 66px; z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 7px 18px; border-radius: 24px;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    background: transparent; color: #4A2010;
+    font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.5px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .filter-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+  .filter-btn.active { background: var(--crimson); border-color: var(--crimson); color: var(--gold-light); }
+  .search-wrap { position: relative; }
+  .search-wrap input {
+    padding: 9px 40px 9px 16px; border: 1.5px solid rgba(201,168,76,0.3);
+    border-radius: 24px; font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+    color: var(--dark); background: var(--cream); outline: none; min-width: 260px;
+    transition: border-color 0.3s;
+  }
+  .search-wrap input:focus { border-color: var(--crimson); }
+  .search-wrap span { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--gold-dark); }
+  .view-btns { display: flex; gap: 6px; }
+  .view-btn {
+    width: 36px; height: 36px; border: 1.5px solid rgba(201,168,76,0.3);
+    border-radius: 4px; background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    transition: all 0.2s; color: #6B3020;
+  }
+  .view-btn.active { background: var(--dark); border-color: var(--dark); color: var(--gold); }
+
+  /* RESULT COUNT */
+  .result-bar {
+    padding: 14px 40px;
+    font-family: 'Cinzel', serif; font-size: 0.78rem;
+    color: var(--gold-dark); letter-spacing: 2px;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    background: #FFF5E6;
+  }
+
+  /* GALLERY */
+  .gallery { padding: 36px 40px 60px; }
+  #templeGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+    transition: all 0.3s;
+  }
+  #templeGrid.list-view {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* CARD */
+  .temple-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s;
+    animation: cardIn 0.4s ease forwards;
+    opacity: 0;
+  }
+  @keyframes cardIn { to { opacity:1; } }
+  .temple-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 60px var(--shadow);
+    z-index: 2;
+  }
+
+  /* IMAGE AREA */
+  .card-img {
+    width: 100%; height: 200px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #3D1A00, #8B0000);
+  }
+  .card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .temple-card:hover .card-img img { transform: scale(1.08); }
+  .card-img-fallback {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #3D1A00 0%, #8B0000 50%, #6B2800 100%);
+  }
+  .fallback-symbol { font-size: 3.5rem; margin-bottom: 8px; }
+  .fallback-name { font-family: 'Cinzel', serif; color: var(--gold-light); font-size: 0.8rem; letter-spacing: 2px; text-align: center; padding: 0 16px; }
+  .card-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(26,10,0,0.85); color: var(--gold);
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    padding: 4px 10px; letter-spacing: 1px; border-radius: 2px;
+    backdrop-filter: blur(4px);
+  }
+  .state-tag {
+    position: absolute; top: 12px; right: 12px;
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    padding: 3px 9px; border-radius: 2px; letter-spacing: 0.5px;
+  }
+
+  /* CARD BODY */
+  .card-body { padding: 18px 20px 22px; }
+  .card-deity { font-family: 'Cinzel', serif; color: var(--gold-dark); font-size: 0.72rem; letter-spacing: 2px; margin-bottom: 5px; }
+  .card-title { font-family: 'Cinzel', serif; color: var(--crimson); font-size: 1.05rem; margin-bottom: 6px; line-height: 1.3; }
+  .card-loc { color: #6B3020; font-size: 0.92rem; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+  .card-desc { color: #4A2010; font-size: 0.95rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-footer { padding: 10px 20px; border-top: 1px solid rgba(201,168,76,0.15); display: flex; justify-content: space-between; align-items: center; }
+  .card-azhwar { font-size: 0.8rem; color: var(--gold-dark); font-style: italic; }
+  .view-more { font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--crimson); letter-spacing: 1px; background: none; border: none; cursor: pointer; padding: 0; }
+
+  /* LIST VIEW */
+  #templeGrid.list-view .temple-card {
+    display: flex; flex-direction: row;
+  }
+  #templeGrid.list-view .card-img {
+    width: 140px; min-width: 140px; height: auto;
+  }
+  #templeGrid.list-view .temple-card:hover {
+    transform: translateX(4px);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background: rgba(10,4,0,0.85); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--cream); max-width: 700px; width: 100%;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+    animation: modalIn 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    max-height: 90vh; overflow-y: auto;
+  }
+  @keyframes modalIn { from { opacity:0; transform:scale(0.92); } to { opacity:1; transform:scale(1); } }
+  .modal-img {
+    width: 100%; height: 280px; object-fit: cover;
+    background: linear-gradient(135deg, #3D1A00, #8B0000);
+  }
+  .modal-img-fallback {
+    width: 100%; height: 280px;
+    background: linear-gradient(135deg, #3D1A00, #8B0000);
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .modal-header { padding: 28px 32px 0; }
+  .modal-num { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.75rem; letter-spacing: 3px; }
+  .modal-title { font-family: 'Cinzel Decorative', cursive; color: var(--crimson); font-size: 1.7rem; margin: 6px 0 4px; line-height: 1.2; }
+  .modal-deity { font-family: 'Cinzel', serif; color: var(--gold-dark); font-size: 0.9rem; letter-spacing: 1px; }
+  .modal-divider { height: 1px; background: rgba(201,168,76,0.25); margin: 20px 32px; }
+  .modal-body { padding: 0 32px 32px; }
+  .modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .meta-item label { font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--gold-dark); letter-spacing: 2px; display: block; margin-bottom: 3px; }
+  .meta-item span { color: #3D1A00; font-size: 1rem; }
+  .modal-desc { font-size: 1.1rem; line-height: 1.85; color: #3D1A00; }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(26,10,0,0.8); border: none; color: var(--gold);
+    font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: var(--crimson); }
+  .modal-wrapper { position: relative; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark); color: rgba(253,246,227,0.5);
+    padding: 36px 48px; display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 1.5px;
+  }
+  footer span { color: var(--gold); }
+
+  /* NO RESULTS */
+  .no-results { grid-column: 1/-1; text-align: center; padding: 80px 0; }
+  .no-results p { font-family: 'Cinzel', serif; color: var(--gold-dark); font-size: 1rem; letter-spacing: 1px; }
+
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 12px 16px; }
+    .nav-links, .nav-user { display: none; }
+    .nav-hamburger { display: flex; }
+
+    /* Controls */
+    .controls {
+      padding: 12px 14px; top: 57px;
+      flex-direction: column; gap: 12px; align-items: stretch;
+    }
+    .filter-group { gap: 6px; }
+    .filter-btn { font-size: 0.7rem; padding: 5px 12px; }
+    .search-wrap input { min-width: unset; width: 100%; }
+    .search-wrap { width: 100%; }
+    .view-btns { align-self: flex-end; }
+
+    /* Gallery */
+    .gallery { padding: 20px 12px 40px; }
+    #templeGrid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px; }
+    .card-img { height: 160px; }
+    .card-body { padding: 12px 14px 14px; }
+    .card-title { font-size: 0.95rem; }
+
+    /* List view on mobile */
+    #templeGrid.list-view .card-img { width: 100px; min-width: 100px; height: auto; }
+    #templeGrid.list-view .temple-card { flex-direction: row; }
+
+    /* Result bar */
+    .result-bar { padding: 10px 14px; }
+
+    /* Modal */
+    .modal { max-height: 95vh; }
+    .modal-header { padding: 18px 18px 0; }
+    .modal-body { padding: 0 18px 22px; }
+    .modal-meta { grid-template-columns: 1fr; gap: 10px; }
+    .modal-title { font-size: 1.3rem; }
+
+    /* Footer */
+    footer { flex-direction: column; gap: 10px; text-align: center; padding: 28px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Divya Desam</a>
+  <ul class="nav-links">
+    <li><a href="home.html">Home</a></li>
+    <li><a href="temples.html" class="active">Temples</a></li>
+    <li><a href="map.html">Map</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-user">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <span id="navUsername">Seeker</span>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <ul>
+    <li><a href="home.html">Home</a></li>
+    <li><a href="temples.html" class="active">Temples</a></li>
+    <li><a href="map.html">Map</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="drawer-user">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <span id="drawerUsername">Seeker</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="temples-hero">
+  <div class="hero-inner">
+    <h1>The 108 Divya Desams</h1>
+    <p>Sacred abodes of Lord Vishnu, immortalized in the Nalayira Divya Prabandham</p>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="filter-group">
+    <button class="filter-btn active" data-filter="all">All 108</button>
+    <button class="filter-btn" data-filter="Tamil Nadu">Tamil Nadu</button>
+    <button class="filter-btn" data-filter="Kerala">Kerala</button>
+    <button class="filter-btn" data-filter="Andhra Pradesh">Andhra</button>
+    <button class="filter-btn" data-filter="north">North India</button>
+    <button class="filter-btn" data-filter="Nepal">Nepal</button>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search temples, deities, locations…">
+    <span>🔍</span>
+  </div>
+  <div class="view-btns">
+    <button class="view-btn active" id="gridBtn" title="Grid view">⊞</button>
+    <button class="view-btn" id="listBtn" title="List view">☰</button>
+  </div>
+</div>
+
+<div class="result-bar" id="resultBar">Showing all 108 Divya Desam temples</div>
+
+<div class="gallery">
+  <div id="templeGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-wrapper" style="position:relative; max-width:700px; width:100%;">
+    <div class="modal" id="modal">
+      <div id="modalImgWrap"></div>
+      <div class="modal-header">
+        <div class="modal-num" id="mNum"></div>
+        <div class="modal-title" id="mTitle"></div>
+        <div class="modal-deity" id="mDeity"></div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <div class="meta-item">
+            <label>Location</label>
+            <span id="mLoc"></span>
+          </div>
+          <div class="meta-item">
+            <label>Region</label>
+            <span id="mState"></span>
+          </div>
+          <div class="meta-item">
+            <label>Presiding Deity</label>
+            <span id="mDeity2"></span>
+          </div>
+          <div class="meta-item">
+            <label>Goddess</label>
+            <span id="mGoddess"></span>
+          </div>
+        </div>
+        <p class="modal-desc" id="mDesc"></p>
+      </div>
+    </div>
+    <button class="modal-close" id="modalClose">✕</button>
+  </div>
+</div>
+
+<footer>
+  <div>© 2025 <span>Divya Desam</span> · Sacred Heritage Project</div>
+  <div>🙏 Jai Srimannarayana</div>
+</footer>
+
+<script>
+// Username from localStorage
+const storedName = localStorage.getItem('userName') || 'Seeker';
+document.getElementById('navUsername').textContent = storedName;
+document.getElementById('drawerUsername').textContent = storedName;
+
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  navDrawer.classList.toggle('open');
+  document.body.style.overflow = navDrawer.classList.contains('open') ? 'hidden' : '';
+});
+navDrawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navDrawer.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+const stateColors = {
+  "Tamil Nadu": { bg:"rgba(201,168,76,0.15)", text:"#8B6914" },
+  "Kerala": { bg:"rgba(232,116,138,0.15)", text:"#8B2040" },
+  "Andhra Pradesh": { bg:"rgba(127,206,205,0.2)", text:"#1A6B6A" },
+  "Uttar Pradesh": { bg:"rgba(168,216,168,0.2)", text:"#1A6B1A" },
+  "Nepal": { bg:"rgba(184,160,224,0.2)", text:"#4A1A8B" },
+  "other": { bg:"rgba(160,160,160,0.15)", text:"#404040" }
+};
+
+// Wikimedia Commons image map for key temples
+const templeImages = {
+  1: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Srirangam_Temple.jpg/640px-Srirangam_Temple.jpg",
+  4: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Sree_Padmanabhaswamy_Temple.jpg/640px-Sree_Padmanabhaswamy_Temple.jpg",
+  14: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Tirumala_Venkateswara_Temple.jpg/640px-Tirumala_Venkateswara_Temple.jpg",
+  20: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Varadaraja_Perumal_Temple.jpg/640px-Varadaraja_Perumal_Temple.jpg",
+  26: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Nataraja_temple%2C_Chidambaram.jpg/640px-Nataraja_temple%2C_Chidambaram.jpg",
+  40: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Mahabalipuram_Shore_Temple.jpg/640px-Mahabalipuram_Shore_Temple.jpg",
+  54: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Srivilliputtur_Andal_temple.jpg/640px-Srivilliputtur_Andal_temple.jpg",
+  56: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Alwar_Tirunagari_Temple.jpg/640px-Alwar_Tirunagari_Temple.jpg",
+  80: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Badrinath_Temple.jpg/640px-Badrinath_Temple.jpg",
+  82: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Ram_Janmabhoomi_Temple.jpg/640px-Ram_Janmabhoomi_Temple.jpg",
+  85: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Muktinath_Temple.jpg/640px-Muktinath_Temple.jpg",
+};
+
+const goddesses = [
+  "Sri Ranganayaki","Sri Kamalavalli","Sri Komalavalli","Sri Hamsavahini",
+  "Sri Thiruvikrama Devi","Sri Madhura Veni","Sri Kuyilalwar","Sri Andal",
+  "Sri Andal (Kothai)","Sri Goda Devi","Sri Kamalavalli","Sri Trivikrama Devi",
+  "Sri Padmasini","Sri Alamelumanga","Sri Chenchu Lakshmi","Sri Kalavathi",
+  "Sri Lakshmi","Sri Kamala Valli","Sri Kamala Valli","Sri Perundevi Thayar",
+  "Sri Komalavalli","Sri Vimala Valli","Sri Soundarya Valli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Devi","Sri Trilokya Mangai","Sri Komalavalli",
+  "Sri Komalavalli","Sri Mangalasasana Nayaki","Sri Hema Ambuja Nayaki",
+  "Sri Komalavalli","Sri Soundaryanayaki","Sri Komalavalli","Sri Komalavalli",
+  "Sri Lokam","Sri Komalavalli","Sri Veeravazhuthur Nayaki","Sri Vedavalli",
+  "Sri Rukmini","Sri Komalavalli","Sri Komalavalli","Sri Sridevi","Sri Sridevi",
+  "Sri Sridevi","Sri Malaramagal","Sri Sridevi","Sri Sridevi","Sri Komalavalli",
+  "Sri Lakshmi","Sri Hemabja Valli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Hemabja Nayaki","Sri Kamalavalli","Sri Komalavalli","Sri Kamalavalli",
+  "Sri Trivikrama Nayaki","Sri Komalavalli","Sri Komalavalli","Sri Kalyani",
+  "Sri Komalavalli","Sri Komalavalli","Sri Sridevi","Sri Sridevi",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Sridevi","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Lakshminarayana",
+  "Sri Lakshmi","Sri Sita Devi","Sri Lakshminarayana","Sri Saligrama Devi",
+  "Sri Lakshminarayana","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+  "Sri Komalavalli","Sri Komalavalli","Sri Komalavalli","Sri Komalavalli",
+];
+
+const symbols = ["🛕","🌸","🪷","🌺","✨","🔱","🪔","🌼","⭐","🌊"];
+
+const temples = [
+  { id:1, name:"Srirangam", deity:"Ranganathaswamy", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Largest functioning Hindu temple in the world and foremost of the 108 Divya Desams. The island temple complex spans 156 acres with 21 magnificent gopurams." },
+  { id:2, name:"Sri Rangam – Chithrakoodam", deity:"Thrivikrama", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Vimana shrine within the sacred Srirangam complex, dedicated to the cosmic form of Trivikrama." },
+  { id:3, name:"Thirupper Nagar (Koviladi)", deity:"Appakkudathan", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient Chola-period temple where the presiding deity Appakkudathan is praised in the Prabandham for his fatherly grace." },
+  { id:4, name:"Thiruvananthapuram", deity:"Padmanabhaswamy", loc:"Thiruvananthapuram, Kerala", state:"Kerala", desc:"One of the wealthiest temples on earth. The presiding deity reclines on Ananta Shesha serpent in Anantha Shayana posture, spanning three doors." },
+  { id:5, name:"Thiruvalla (Sree Vallabha)", deity:"Sree Vallabha", loc:"Thiruvalla, Kerala", state:"Kerala", desc:"Renowned Vaishnavite shrine in Kerala's backwater region, praised for the serene Vishnu deity who grants all the devotee's wishes." },
+  { id:6, name:"Moozhikkulam", deity:"Lakshmana Perumal", loc:"Ernakulam, Kerala", state:"Kerala", desc:"One of the three Divya Desams in Ernakulam district, rare for its dedication to Lakshmana, Lord Rama's devoted brother." },
+  { id:7, name:"Thrichittattu", deity:"Sree Rama", loc:"Chengannur, Kerala", state:"Kerala", desc:"Sacred temple where Lord Vishnu manifests as Sree Rama in Kerala, associated with the Ramayana tradition." },
+  { id:8, name:"Thiruvanvandoor", deity:"Pambanai Appan", loc:"Mavelikkara, Kerala", state:"Kerala", desc:"Sacred abode near Mavelikkara sung by Thirumangai Azhwar in ecstatic devotion." },
+  { id:9, name:"Pundareekapuram", deity:"Trivikrama Perumal", loc:"Thrissur, Kerala", state:"Kerala", desc:"Temple where Trivikrama is worshipped, named after the lotus flower sacred to Vishnu." },
+  { id:10, name:"Thiru Katkarai", deity:"Sreedevi Komalavalli", loc:"Thrissur, Kerala", state:"Kerala", desc:"Ancient Vaishnava shrine in Thrissur known for its serene forest setting and ancient stone sculptures." },
+  { id:11, name:"Thiruvituvakkode", deity:"Trivikrama Perumal", loc:"Kochi, Kerala", state:"Kerala", desc:"Sacred abode of Trivikrama near the ancient city of Kochi, with rock-cut sculptures of exceptional artistry." },
+  { id:12, name:"Thiruvanvandoor (Kottayam)", deity:"Pambanai Appan", loc:"Kottayam, Kerala", state:"Kerala", desc:"One of the Divya Desams in central Kerala, situated amidst lush paddy fields near the backwaters." },
+  { id:13, name:"Thirukovil (Tiruvallam)", deity:"Kalyana Venkateswara", loc:"Thiruvananthapuram, Kerala", state:"Kerala", desc:"Temple near Thiruvananthapuram where Vishnu appears in the auspicious wedding form of Kalyana Venkateswara." },
+  { id:14, name:"Tirupati (Tirumala)", deity:"Venkateswara (Balaji)", loc:"Chittoor, Andhra Pradesh", state:"Andhra Pradesh", desc:"Most visited holy place on earth, receiving over 75,000 pilgrims daily. The Lord of Seven Hills stands on Tirumala granting moksha to all devotees." },
+  { id:15, name:"Ahobilam", deity:"Narasimha Swamy", loc:"Kurnool, Andhra Pradesh", state:"Andhra Pradesh", desc:"Nine distinct shrines of Lord Narasimha — Ugra, Prahlada, Malola and others — spread across a dramatic forested hillock." },
+  { id:16, name:"Srinivasa Mangapuram", deity:"Kalyana Venkateswara", loc:"Chittoor, Andhra Pradesh", state:"Andhra Pradesh", desc:"The celestial wedding of Venkateswara with Padmavathi is eternally celebrated here. A deeply beloved shrine near Tirupati." },
+  { id:17, name:"Nagalapuram", deity:"Vedanarayana Perumal", loc:"Andhra Pradesh / Tamil Nadu border", state:"Andhra Pradesh", desc:"Sacred shore temple at the border of Andhra Pradesh and Tamil Nadu, where Vishnu faces the Bay of Bengal." },
+  { id:18, name:"Sirupuliyur", deity:"Ulagalantha Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Associated with the legend of Trivikrama measuring the worlds; nestled in the sacred Kanchipuram cluster." },
+  { id:19, name:"Kanchipuram – Ulagalantha Perumal", deity:"Ulagalantha Perumal (Trivikrama)", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Main Vaishnavite temple in Kanchipuram where the Trivikrama form is worshipped in grand splendor." },
+  { id:20, name:"Kanchipuram – Varadaraja Perumal", deity:"Varadaraja Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"One of the greatest Vishnu temples in South India. The 100-pillar hall is a masterpiece. The standing Vishnu grants the boon of liberation." },
+  { id:21, name:"Thiru Oorakam", deity:"Trivikrama Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient temple within the Kanchipuram group. Perumal here is praised by Thirumangai Azhwar in powerful verses." },
+  { id:22, name:"Thiruneeragam", deity:"Jagadeeswara Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Serene Divya Desam within Kanchipuram known for the crystal-clear sacred tank and its peaceful atmosphere." },
+  { id:23, name:"Thiruvelukkai", deity:"Azhagiya Singa Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Unique shrine where Narasimha reclines in a beautiful and unusually serene posture, defying the fierce nature of the avatar." },
+  { id:24, name:"Thiruoottaru", deity:"Trivikrama Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"One of the eight Kanchipuram Divya Desams. The sacred tank here is especially revered for purification." },
+  { id:25, name:"Kanchipuram – Yathoktakari", deity:"Yathoktakari Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Deity who did exactly as Poigai Azhwar wished. This temple marks the site of the Azhwar's first mystical experience of Vishnu." },
+  { id:26, name:"Chidambaram – Govindaraja", deity:"Govindaraja Swamy", loc:"Chidambaram, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu enshrined within the world-famous Nataraja Chidambaram temple. A remarkable coexistence of Shaiva and Vaishnava traditions." },
+  { id:27, name:"Sirkazhi", deity:"Trivikrama", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient temple sung by multiple Azhwars and also associated with Thirugnana Sambandar; a deeply layered sacred site." },
+  { id:28, name:"Thiruvaali-Thirunagari", deity:"Trivikrama", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Two ancient shrines celebrated together as one Divya Desam. Rich in Azhwar hymns and Chola-era architecture." },
+  { id:29, name:"Kumbakonam – Sarangapani", deity:"Sarangapani", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Lord Vishnu holding the Saranga bow. The festival chariot (ther) here is among the most ornate in Tamil Nadu." },
+  { id:30, name:"Kumbakonam – Chakrapani", deity:"Chakrapani", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu in the form of the Sudarshana Chakra (divine discus), powerfully manifesting the weapon aspect of Perumal." },
+  { id:31, name:"Kumbakonam – Aravamudhan", deity:"Aravamudhan", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Nectar of nectar. The reclining Vishnu in the Nachiyar Koil is considered one of the most beautiful forms in South India." },
+  { id:32, name:"Thiruindaloor", deity:"Parthasarathy Perumal", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu as Parthasarathy — the charioteer of Arjuna in the Mahabharata war — enshrined in a graceful Chola temple." },
+  { id:33, name:"Thiruvelliyangudi", deity:"Kolavilli Raman", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient Chola-period temple where Vishnu as Kolavilli Raman is worshipped, praised for radiant golden hue." },
+  { id:34, name:"Thiruchirupuliyur", deity:"Uthama Narayana", loc:"Tamil Nadu", state:"Tamil Nadu", desc:"Sacred Divya Desam in the Cauvery river belt. The deity here is described in glowing terms in the Divya Prabandham." },
+  { id:35, name:"Thirukandiyur", deity:"Brahmasaapavimochanar", loc:"Thanjavur, Tamil Nadu", state:"Tamil Nadu", desc:"Brahma received liberation from a curse here. The deity's name itself means 'one who freed Brahma from his curse.'" },
+  { id:36, name:"Thiruvalanchuzhi", deity:"Appar Koil Perumal", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Sacred riverside shrine in the Kumbakonam cluster where Azhwars sang verses of surpassing beauty." },
+  { id:37, name:"Thiruarimeya Vinnagaram", deity:"Trivikrama", loc:"Mayiladuthurai, Tamil Nadu", state:"Tamil Nadu", desc:"Beautiful vimana tower and sacred tank characterize this Divya Desam in the Mayiladuthurai region." },
+  { id:38, name:"Thiruvalur", deity:"Veeraraghava Perumal", loc:"Tiruvallur, Tamil Nadu", state:"Tamil Nadu", desc:"The warrior and heroic form of Vishnu presides here, near modern-day Chennai. Sung by Thirumangai Azhwar." },
+  { id:39, name:"Chennai – Parthasarathy", deity:"Parthasarathy", loc:"Triplicane, Chennai, Tamil Nadu", state:"Tamil Nadu", desc:"One of the oldest temples in Chennai, enshrining five different forms of Vishnu. Lord Krishna appears with scars from the Mahabharata war." },
+  { id:40, name:"Thirukadalmallai (Mahabalipuram)", deity:"Sthalasayana Perumal", loc:"Mahabalipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Shore temple facing the Bay of Bengal. The deity sleeps on the ocean floor — a stunning Pallava creation by the sea." },
+  { id:41, name:"Thirunandipura Vinnagaram", deity:"Jagamatha Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Celestial abode within Kanchipuram group. The soaring gopuram once dominated the flat plains of the temple city." },
+  { id:42, name:"Thiruvekka (Yathoktakari)", deity:"Yathoktakari Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"The very spot where Poigai Azhwar, the first of the twelve, composed his celebrated first Tiruvandadi." },
+  { id:43, name:"Thirumoozhikalam", deity:"Lakshmana Perumal", loc:"Moozhikkulam, Kerala", state:"Kerala", desc:"Dedicated to Lakshmana — one of the rarest dedications in Vaishnavism. The serene temple stands in lush Kerala greenery." },
+  { id:44, name:"Thirunavay", deity:"Navamukunda Perumal", loc:"Malappuram, Kerala", state:"Kerala", desc:"Sacred shrine on the banks of the Bharatapuzha river, where the nine-formed Vishnu presides." },
+  { id:45, name:"Thiruvanpurisaram", deity:"Appu Perumal", loc:"Kerala", state:"Kerala", desc:"Ancient Kerala Divya Desam. The deity name Appu relates to water, reflecting the sacred tanks and river associations." },
+  { id:46, name:"Thiruchakara Puram", deity:"Chakara Perumal", loc:"Thrissur, Kerala", state:"Kerala", desc:"Ancient Divya Desam in the Thrissur district of Kerala, dedicated to the Sudarshana Chakra manifestation of Vishnu." },
+  { id:47, name:"Thirumittakode", deity:"Perumal", loc:"Palakkad, Kerala", state:"Kerala", desc:"Sacred Divya Desam in Palakkad district, located in the foothills between the Western Ghats." },
+  { id:48, name:"Thiru Puliyur", deity:"Perumal", loc:"Kerala", state:"Kerala", desc:"One of the Kerala Divya Desams, praised in the Nalayira Divya Prabandham for its sacred natural beauty." },
+  { id:49, name:"Thiru Padagam", deity:"Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Divya Desam near Kanchipuram where Azhwar hymns describe the deity's lotus feet with deep devotion." },
+  { id:50, name:"Thiruttanka", deity:"Deivanayaka Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"One of the Kanchipuram Divya Desam group where Vishnu appears as the leader of the celestials." },
+  { id:51, name:"Thiruvanparisaram", deity:"Kalyana Perumal", loc:"Nagercoil, Tamil Nadu", state:"Tamil Nadu", desc:"Southernmost Divya Desam in peninsular India, near the very tip of the subcontinent in Nagercoil." },
+  { id:52, name:"Thiru Kurungudi", deity:"Nambi Perumal", loc:"Tirunelveli, Tamil Nadu", state:"Tamil Nadu", desc:"All twelve Azhwars have sung verses about Nambi Perumal here. The temple has a glorious and rare dual sanctum." },
+  { id:53, name:"Thiruthangal", deity:"Nindra Nambi Perumal", loc:"Virudhunagar, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu in standing posture, described as radiantly beautiful in the Divya Prabandham verses." },
+  { id:54, name:"Srivilliputtur", deity:"Vatapatrasayi", loc:"Virudhunagar, Tamil Nadu", state:"Tamil Nadu", desc:"Birthplace of Andal, the only woman Azhwar. The towering 11-tiered gopuram is the symbol of Tamil Nadu's Tourism Department." },
+  { id:55, name:"Thiruppulingudi", deity:"Sowrirajan Perumal", loc:"Tirunelveli, Tamil Nadu", state:"Tamil Nadu", desc:"Riverside temple in the Tirunelveli region praised in the Divya Prabandham for the Lord's jewel-like dark complexion." },
+  { id:56, name:"Thirukkurukur (Alwar Tirunagari)", deity:"Aadhinadha Perumal", loc:"Tirunelveli, Tamil Nadu", state:"Tamil Nadu", desc:"Sacred birthplace of Nammazhwar, the greatest of all Azhwars. The Lord here is Aadhinadha — the primordial protector." },
+  { id:57, name:"Thiru Kolur", deity:"Vaikuntha Perumal", loc:"Tirunelveli, Tamil Nadu", state:"Tamil Nadu", desc:"Divya Desam on the sacred Tamirabarani river, where the heavenly form of Vishnu is worshipped with ancient rituals." },
+  { id:58, name:"Thiruppaadagam (Sirkazhi area)", deity:"Trivikrama", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient coastal Divya Desam near the Cauvery delta, with a history stretching back to the Sangam period." },
+  { id:59, name:"Thirumogur", deity:"Kalalamega Perumal", loc:"Madurai, Tamil Nadu", state:"Tamil Nadu", desc:"Blue cloud form of Vishnu near Madurai, where the dark-complexioned Lord is praised in some of the Prabandham's most lyrical verses." },
+  { id:60, name:"Azhagar Kovil (Alagar Hills)", deity:"Kallazhagar Perumal", loc:"Madurai, Tamil Nadu", state:"Tamil Nadu", desc:"Scenic hill shrine on Alagar Hills. The divine procession down to the Vaigai river for the Chithirai festival is an unforgettable spectacle." },
+  { id:61, name:"Thirumaliruncholai", deity:"Sundararaja Perumal", loc:"Madurai, Tamil Nadu", state:"Tamil Nadu", desc:"Forest shrine above the Alagar Kovil complex; the beautiful form of Sundararaja is praised in ecstatic verse by Nammazhwar." },
+  { id:62, name:"Thirumeyyam", deity:"Satya Murthy Perumal", loc:"Pudukkottai, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu in a cave temple — one of the finest rock-cut shrines in South India. The truth-embodying Lord grants liberation." },
+  { id:63, name:"Thiru Anbil", deity:"Sundara Perumal", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Island temple formed by the Cauvery river, where the beautiful Vishnu presides in an ancient Chola-era shrine." },
+  { id:64, name:"Thiruvellarai", deity:"Pundarikaksha Perumal", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Lotus-eyed Lord perched on a rocky hillock. The natural cave shrine here is considered one of the oldest Vaishnava sites." },
+  { id:65, name:"Koviladi", deity:"Trivikrama Perumal", loc:"Thanjavur, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient Divya Desam in Thanjavur district, praised in classical Tamil verse for the majestic cosmic Trivikrama form." },
+  { id:66, name:"Thirunaangur Cluster (11 temples)", deity:"Multiple Deities", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"A sacred cluster of 11 Divya Desams in Sirkazhi area, collectively celebrated on Aadi Poornima. A unique multi-shrine pilgimage." },
+  { id:67, name:"Vijayasana Perumal", deity:"Vijayasana Perumal", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Part of the celebrated Thirunaangur cluster; the victorious Vishnu seated in majestic repose." },
+  { id:68, name:"Thiruvanpurushothamam", deity:"Purushottama Perumal", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"One of the Thirunaangur cluster temples; Vishnu as the Supreme Being — Purushottama." },
+  { id:69, name:"Semponsei Koil", deity:"Trivikrama", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"The golden-hued gopuram makes this one of the most visually striking of the Thirunaangur cluster." },
+  { id:70, name:"Thirumandangudi", deity:"Neelamega Perumal", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Blue cloud form of Vishnu in the Cauvery delta region; a peaceful and ancient shrine surrounded by paddy fields." },
+  { id:71, name:"Thiruchangur", deity:"Saranatha Perumal", loc:"Cuddalore, Tamil Nadu", state:"Tamil Nadu", desc:"Serene abode near Cuddalore, where Vishnu shelters and protects all who seek refuge." },
+  { id:72, name:"Thiru Irukkum Kudi", deity:"Perumal", loc:"Villupuram, Tamil Nadu", state:"Tamil Nadu", desc:"Divya Desam in Villupuram district, praised for the deity's constant presence — always dwelling here." },
+  { id:73, name:"Thirumazhisai", deity:"Jagannatha Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Birthplace of Thirumazhisai Azhwar. The Lord of the Universe presides over this ancient shrine near Kanchipuram." },
+  { id:74, name:"Thiruneermalai", deity:"Ranganatha Perumal", loc:"Chennai, Tamil Nadu", state:"Tamil Nadu", desc:"Cave and hillside temples on the outskirts of Chennai. Two presiding deities — one reclined, one standing — in remarkable natural rock settings." },
+  { id:75, name:"Thiru Padagam – Hasthinapuram", deity:"Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"One of the Kanchipuram Divya Desam group. The presiding deity's golden hue is compared to radiant sunlight." },
+  { id:76, name:"Thiruvahindrapuram", deity:"Devanatha Perumal", loc:"Cuddalore, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu on the seashore at Cuddalore, where the sea breeze carries the fragrance of the sacred lotus flowers." },
+  { id:77, name:"Thiru Anbil", deity:"Sundararaja Perumal", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Cauvery island temple where the beautiful Vishnu is worshipped, surrounded by the sacred river on all sides." },
+  { id:78, name:"Thirukoilur", deity:"Trivikrama Perumal", loc:"Villupuram, Tamil Nadu", state:"Tamil Nadu", desc:"Famous hill shrine on the Uttara Kosamangai hill, where Trivikrama stands in eternal cosmic pose." },
+  { id:79, name:"Thiruvellakkulam (Thirunaangur)", deity:"Trivikrama", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Part of Thirunaangur sacred cluster. The white lotus lake surrounding the shrine creates an ethereal atmosphere." },
+  { id:80, name:"Badrinath", deity:"Badri Narayana", loc:"Chamoli, Uttarakhand", state:"Uttar Pradesh", desc:"One of the Char Dham pilgrimage sites in the Himalayas. Lord Vishnu meditates here eternally in divine ascetic stillness at 3,100 meters altitude." },
+  { id:81, name:"Mathura", deity:"Kesava Perumal", loc:"Mathura, Uttar Pradesh", state:"Uttar Pradesh", desc:"Sacred birthplace of Lord Krishna. One of the seven most holy cities of India; the entire city is considered Vishnu's divine abode." },
+  { id:82, name:"Ayodhya", deity:"Sree Rama", loc:"Ayodhya, Uttar Pradesh", state:"Uttar Pradesh", desc:"Birthplace of Lord Rama, avatar of Vishnu. One of the most sacred cities in the entire Hindu world." },
+  { id:83, name:"Naimisaranyam", deity:"Hari (Devanatha Perumal)", loc:"Sitapur, Uttar Pradesh", state:"Uttar Pradesh", desc:"The sacred forest where 88,000 sages gathered to hear the Puranas. The spinning Sudarshana chakra stopped here, marking this as the navel of the earth." },
+  { id:84, name:"Saligrama", deity:"Lakshmi Narasimha", loc:"Muktinath region, Nepal", state:"Nepal", desc:"Shaligrama stones — sacred fossils considered direct manifestations of Vishnu — are collected from the Gandaki river here." },
+  { id:85, name:"Muktinath (Thiru Mukthi Nath)", deity:"Mukti Narayana", loc:"Mustang, Nepal", state:"Nepal", desc:"The only Divya Desam outside India, at 3,710 meters altitude. 108 bull-faced water spouts feed the sacred kund. Lord grants moksha directly to pilgrims." },
+  { id:86, name:"Thiruvanthipuram", deity:"Hemambuja Nayaki Sameta", loc:"Cuddalore, Tamil Nadu", state:"Tamil Nadu", desc:"Divya Desam in Cuddalore district with a golden-lotused goddess as the presiding Thayar." },
+  { id:87, name:"Thiru Kanda Mangai", deity:"Bakthavatsala Perumal", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"The devotee-loving Lord. This name encapsulates the core of Sri Vaishnava bhakti — Vishnu who melts at the love of his devotees." },
+  { id:88, name:"Thirunedunthandagam", deity:"Trivikrama", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Close to the Cauvery delta; Azhwar's verses describe the Lord's cosmic form in extraordinary poetic detail." },
+  { id:89, name:"Thirukoshtiyur", deity:"Sowmya Narayana Perumal", loc:"Sivagangai, Tamil Nadu", state:"Tamil Nadu", desc:"Sri Ramanuja received the sacred Ashtakshara Mantra here after 18 attempts. He then proclaimed it from the temple tower to all." },
+  { id:90, name:"Thiruppullambhuthankudi", deity:"Trivikrama", loc:"Thanjavur, Tamil Nadu", state:"Tamil Nadu", desc:"Cauvery delta Divya Desam praised by Thirumangai Azhwar for the divine dark form of Trivikrama." },
+  { id:91, name:"Thiruvellakulam", deity:"Perumal", loc:"Tiruchirappalli, Tamil Nadu", state:"Tamil Nadu", desc:"Near the sacred Srirangam complex. The lotus tank here mirrors the celestial abode of Vishnu." },
+  { id:92, name:"Thirupaarthan Palli", deity:"Parthasarathy Perumal", loc:"Thanjavur, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu as Parthasarathy, the divine charioteer of Arjuna. The blue complexion and charioteer's dress are depicted vividly here." },
+  { id:93, name:"Thirutholaivillimangalam", deity:"Aramia Perumal", loc:"Tirunelveli, Tamil Nadu", state:"Tamil Nadu", desc:"One of the Tirunelveli belt Divya Desams, praised for the distant view of the temple's gopuram rising above the palms." },
+  { id:94, name:"Thirukulandhai", deity:"Perumal", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Ancient coastal Divya Desam near Nagapattinam. The sandy shores here witnessed Azhwar's devotional compositions." },
+  { id:95, name:"Thiruvali", deity:"Trivikrama", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Associated with Thirumangai Azhwar's passionate songs. A riverside shrine praised for its architectural splendor." },
+  { id:96, name:"Thirucherai", deity:"Saranatha Perumal", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"Famous for the Saranathan deity who shelters all who seek refuge. One of the most beloved temples in the Kumbakonam cluster." },
+  { id:97, name:"Thiru Sirupuliyur", deity:"Krupasamudra Perumal", loc:"Cuddalore, Tamil Nadu", state:"Tamil Nadu", desc:"Ocean of mercy — the divine name speaks to the boundless compassion of the presiding deity." },
+  { id:98, name:"Thiruvellakkulam", deity:"Pundarikaksha Perumal", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Part of Thirunaangur sacred cluster. The lotus-eyed Lord is praised in verses of intense beauty." },
+  { id:99, name:"Thiru Vaanmayil", deity:"Perumal", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"A Divya Desam near Sirkazhi praised in the Divya Prabandham for the deity's peacock-blue complexion." },
+  { id:100, name:"Thiruvallikeni (Triplicane)", deity:"Parthasarathy Perumal", loc:"Triplicane, Chennai, Tamil Nadu", state:"Tamil Nadu", desc:"Famous Chennai temple where Lord manifests as Narasimha, Rama and Krishna. One of the greatest Divya Desams of Tamil Nadu." },
+  { id:101, name:"Thiru Parameshwara Vinnagaram", deity:"Vaikunta Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Three-storeyed Pallava-era temple representing the three worlds. The architecture is a UNESCO-recognized masterpiece." },
+  { id:102, name:"Thiru Thevanarthogai", deity:"Devanayaka Perumal", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"One of the cluster Divya Desams in the Nagapattinam delta region with ancient Chola sculptural traditions." },
+  { id:103, name:"Thirunangur Uttama Nambi", deity:"Uttama Nambi Perumal", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Part of Thirunaangur group. The supremely noble Vishnu is worshipped here with elaborate ritual traditions." },
+  { id:104, name:"Thirunaangur Manikkoodam", deity:"Trivikrama", loc:"Sirkazhi, Tamil Nadu", state:"Tamil Nadu", desc:"Gem-crowned Lord Trivikrama — the divine crown of jewels is the central motif of this beautiful shrine." },
+  { id:105, name:"Kanchipuram – Thiru Pavala Vannam", deity:"Pavala Vannar Perumal", loc:"Kanchipuram, Tamil Nadu", state:"Tamil Nadu", desc:"Vishnu of coral hue — an unusual and poetically stunning description of the deity's divine complexion." },
+  { id:106, name:"Thiru Adanoor", deity:"Perumal", loc:"Nagapattinam, Tamil Nadu", state:"Tamil Nadu", desc:"Divya Desam in the sacred Nagapattinam delta region, enshrined within a landscape shaped by the holy Cauvery." },
+  { id:107, name:"Thirupaarkadal (Celestial)", deity:"Ranganatha in Ksheera Sagara", loc:"Celestial Realm (Symbolic)", state:"other", desc:"The celestial milk ocean where Lord Vishnu eternally reclines on Ananta Shesha, attended by Lakshmi. Represented symbolically at Srirangam. The unmanifest divine abode." },
+  { id:108, name:"Thiruppaanandal", deity:"Kayarohanaperumal", loc:"Kumbakonam, Tamil Nadu", state:"Tamil Nadu", desc:"The standing Vishnu of the 108th Divya Desam. An ancient Chola-era temple completing the sacred circuit of all 108 holy abodes." }
+];
+
+let currentFilter = 'all';
+let currentSearch = '';
+let isListView = false;
+
+function getFilteredTemples() {
+  return temples.filter(t => {
+    const matchFilter =
+      currentFilter === 'all' ||
+      (currentFilter === 'north' && ['Uttar Pradesh'].includes(t.state)) ||
+      t.state === currentFilter;
+    const q = currentSearch.toLowerCase();
+    const matchSearch = !q ||
+      t.name.toLowerCase().includes(q) ||
+      t.loc.toLowerCase().includes(q) ||
+      t.deity.toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
+}
+
+function getStateStyle(state) {
+  return stateColors[state] || stateColors["other"];
+}
+
+function renderCards() {
+  const filtered = getFilteredTemples();
+  document.getElementById('resultBar').textContent =
+    filtered.length === 108
+      ? 'Showing all 108 Divya Desam temples'
+      : `Showing ${filtered.length} temple${filtered.length !== 1 ? 's' : ''}`;
+
+  const grid = document.getElementById('templeGrid');
+  grid.innerHTML = '';
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results"><p>No temples match your search. Try different keywords.</p></div>';
+    return;
+  }
+
+  filtered.forEach((t, i) => {
+    const sc = getStateStyle(t.state);
+    const img = templeImages[t.id];
+    const sym = symbols[t.id % symbols.length];
+    const card = document.createElement('div');
+    card.className = 'temple-card';
+    card.style.animationDelay = `${Math.min(i * 30, 400)}ms`;
+
+    card.innerHTML = `
+      <div class="card-img">
+        ${img
+          ? `<img src="${img}" alt="${t.name}" onerror="this.parentElement.innerHTML='<div class=card-img-fallback><span class=fallback-symbol>${sym}</span><span class=fallback-name>${t.name}</span></div>'">`
+          : `<div class="card-img-fallback"><span class="fallback-symbol">${sym}</span><span class="fallback-name">${t.name}</span></div>`
+        }
+        <div class="card-badge">${String(t.id).padStart(3,'0')}</div>
+        <div class="state-tag" style="background:${sc.bg};color:${sc.text};">${t.state}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-deity">✦ ${t.deity}</div>
+        <div class="card-title">${t.name}</div>
+        <div class="card-loc">📍 ${t.loc}</div>
+        <div class="card-desc">${t.desc}</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-azhwar">${goddesses[t.id - 1] || 'Sri Thayar'}</span>
+        <button class="view-more" onclick="openModal(${t.id})">Learn More →</button>
+      </div>`;
+    card.addEventListener('click', e => {
+      if (!e.target.classList.contains('view-more')) openModal(t.id);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function openModal(id) {
+  const t = temples.find(x => x.id === id);
+  const sc = getStateStyle(t.state);
+  const img = templeImages[t.id];
+  const sym = symbols[t.id % symbols.length];
+
+  document.getElementById('mNum').textContent = `Temple ${String(t.id).padStart(3,'0')} of 108`;
+  document.getElementById('mTitle').textContent = t.name;
+  document.getElementById('mDeity').textContent = `✦ ${t.deity}`;
+  document.getElementById('mLoc').textContent = t.loc;
+  document.getElementById('mState').textContent = t.state;
+  document.getElementById('mDeity2').textContent = t.deity;
+  document.getElementById('mGoddess').textContent = goddesses[t.id - 1] || 'Sri Thayar';
+  document.getElementById('mDesc').textContent = t.desc;
+
+  const wrap = document.getElementById('modalImgWrap');
+  if (img) {
+    wrap.innerHTML = `<img class="modal-img" src="${img}" alt="${t.name}" onerror="this.outerHTML='<div class=modal-img-fallback><span style=font-size:4rem>${sym}</span></div>'">`;
+  } else {
+    wrap.innerHTML = `<div class="modal-img-fallback"><span style="font-size:4rem">${sym}</span></div>`;
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.dataset.filter;
+    renderCards();
+  });
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', function() {
+  currentSearch = this.value;
+  renderCards();
+});
+
+// View toggle
+document.getElementById('gridBtn').addEventListener('click', function() {
+  isListView = false;
+  document.getElementById('templeGrid').classList.remove('list-view');
+  this.classList.add('active');
+  document.getElementById('listBtn').classList.remove('active');
+});
+document.getElementById('listBtn').addEventListener('click', function() {
+  isListView = true;
+  document.getElementById('templeGrid').classList.add('list-view');
+  this.classList.add('active');
+  document.getElementById('gridBtn').classList.remove('active');
+});
+
+// Initial render
+renderCards();
+</script>
+</body>
+</html>

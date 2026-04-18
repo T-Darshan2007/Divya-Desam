@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divya Desam Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Divya Desam Guide</div>
+        <ul class="nav-links">
+            <li><a href="home.html" id="homeLink">Home</a></li>
+        </ul>
+    </nav>
+
+    <header id="heroSection" class="hero">
+        <h1>Experience the Divine</h1>
+        <p>Journey through the 108 Divya Desams</p>
+        <button id="exploreBtn">Explore Divya Desams</button>
+    </header>
+
+    <main id="explorerSection" class="hidden">
+        <div class="search-dashboard">
+            <div class="control-box">
+                <h3>Filter by Region</h3>
+                <div class="select-wrapper">
+                    <select id="naduFilter">
+                        <option value="all">All 108 Divya Desams</option>
+                        <option value="Chola">Chola Nadu</option>
+                        <option value="Pandiya">Pandiya Nadu</option>
+                        <option value="Malayala">Malayala Nadu</option>
+                        <option value="Tondai">Tondai Nadu</option>
+                        <option value="Vada">Vada Nadu</option>
+                        <option value="Nadu">Nadu Nadu</option>
+                        <option value="Celestial">Celestial (Vimana Logam)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-box">
+                <h3>Search Location</h3>
+                <div class="search-wrapper">
+                    <input type="text" id="placeSearch" placeholder="Search by city (e.g., Trichy)...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </div>
+
+        <p id="resultCount" style="text-align: center; color: #666; font-style: italic;"></p>
+
+        <div id="templeGrid" class="grid"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

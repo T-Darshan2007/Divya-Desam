@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>108 Divya Desam | Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --maroon: #800000; --gold: #FFD700; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: #f4f6f9; overflow-x: hidden; }
+
+       /* Vaikuntham Hero Section - FINAL STABLE VERSION */
+       .vaikuntham-hero {
+        height: 100vh;
+        /* This is an embedded high-quality divine image string */
+        background-image: url("The gates of Vaikuntha are open.png"); 
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        border-bottom: 5px solid #FFD700;
+        }
+        /* Add this to ensure your text is actually readable over any image */
+        .hero-content {
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .hero-content h1 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 4rem; 
+            color: #FFD700; 
+            text-shadow: 2px 2px 10px #000;
+            margin: 0;
+        }
+        
+        /* Jaya & Vijaya Gatekeepers */
+        .gatekeeper {
+            position: absolute;
+            bottom: 50px;
+            width: 200px;
+            filter: drop-shadow(0 0 20px gold);
+            transition: 0.5s;
+        }
+        .gatekeeper.left { left: 5%; }
+        .gatekeeper.right { right: 5%; }
+        .hero-content p { font-style: italic; font-size: 1.2rem; max-width: 800px; padding: 20px; }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-links a { text-decoration: none; color: #444; margin: 0 15px; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--maroon); }
+        .user-profile { display: flex; align-items: center; color: var(--maroon); font-weight: bold; cursor: pointer; }
+        /* Hamburger */
+        .nav-hamburger {
+            display: none; flex-direction: column; justify-content: center;
+            gap: 5px; background: none; border: none; cursor: pointer; padding: 4px;
+        }
+        .nav-hamburger span {
+            display: block; width: 26px; height: 2px;
+            background: var(--maroon); border-radius: 2px; transition: all 0.3s;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile drawer */
+        .nav-drawer {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.98); z-index: 999;
+            flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+        }
+        .nav-drawer.open { display: flex; }
+        .nav-drawer ul { list-style: none; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+        .nav-drawer ul a {
+            font-family: 'Cinzel', serif; font-size: 1.4rem; color: #444;
+            text-decoration: none; letter-spacing: 2px; font-weight: 600; transition: color 0.3s;
+        }
+        .nav-drawer ul a:hover { color: var(--maroon); }
+        .nav-drawer .drawer-user {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--maroon); font-weight: bold;
+            border-top: 1px solid rgba(128,0,0,0.2); padding-top: 24px;
+        }
+
+        /* Mobile media query */
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .user-profile { display: none; }
+            .nav-hamburger { display: flex; }
+        }
+
+
+        /* Footer */
+        footer { background: #2c3e50; color: white; padding: 40px 20px; text-align: center; }
+        .social-icons { margin-bottom: 20px; }
+        .social-icons a { color: white; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
+        .social-icons a:hover { color: var(--gold); transform: scale(1.2); }
+
+        /* Styling for the main Hero Button */
+        .btn-explore-main {
+            padding: 15px 40px;
+            background: var(--gold);
+            color: var(--maroon);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn-explore-main:hover {
+            transform: scale(1.1);
+            background: #fff;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+        
+        /* Floating animation for Gatekeepers */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .gatekeeper {
+            animation: float 4s ease-in-out infinite;
+            /* If you don't have images yet, use a placeholder or remove the img tag */
+            max-height: 400px; 
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo" style="color:var(--maroon); font-family: 'Cinzel'; font-size: 1.5rem;">DIVYA DESAM</div>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="temples.html">Temples</a>
+        <a href="map.html">Map</a>
+        <a href="about.html">About</a>
+    </div>
+    <div class="user-profile">
+        <i class="fas fa-user-circle" style="font-size: 1.8rem; margin-right: 10px;"></i>
+        <span id="displayUserName">Guest</span>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="navDrawer">
+    <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="temples.html">Temples</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="drawer-user">
+        <i class="fas fa-user-circle" style="font-size: 1.6rem;"></i>
+        <span id="drawerUserName">Guest</span>
+    </div>
+</div>
+
+<section class="vaikuntham-hero">
+    <img src="Jaya Vaikuntha gatek.png" class="gatekeeper left" alt="Jaya">
+    <img src="Jaya Vaikuntha gatek.png" class="gatekeeper right" alt="Vijaya">
+
+    <div class="hero-content">
+        <h1>Ananta Shayana</h1>
+        <p>Witness Lord Narayana resting upon Adishesha in the Milky Ocean, as Goddess Lakshmi graces His feet and Brahma emerges from the Lotus.</p>
+        <button class="btn-explore-main" onclick="navigateToExplore().scrollIntoView({behavior:'smooth'})">
+            EXPLORE THE 108
+        </button>
+    </div>
+</section>
+
+<footer>
+    <div class="social-icons">
+        <a href="https://youtube.com/playlist?list=PLhrdHlkOIj-XbEfcuP21IV4zdoX8ACbC8&si=ROKIWtQjEegVdBG5"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/vishnu_nivasam?igsh=ZDJ5b2RndmpzcGxt"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/share/1AtvErDrpC/"><i class="fab fa-facebook"></i></a>
+        <a href="https://x.com/RISHIKESAMADHU"><i class="fab fa-x"></i></a>
+    </div>
+    <p>&copy; 2026 Divya Desam Explorer | Made with Devotion 💛</p>
+</footer>
+
+<script>
+    // Keep the Security Check
+if(localStorage.getItem('isLoggedIn') !== 'true') {
+    window.location.href = 'index.html';
+}
+
+// Keep the User Greeting
+const userName = localStorage.getItem('userName') || "Seeker";
+document.getElementById('displayUserName').innerText = userName;
+document.getElementById('drawerUserName').innerText = userName;
+
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navDrawer.classList.toggle('open');
+    document.body.style.overflow = navDrawer.classList.contains('open') ? 'hidden' : '';
+});
+navDrawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navDrawer.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+
+// Keep the Scroll Effect for the Navbar
+window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if(window.scrollY > 100) nav.style.background = "rgba(255,255,255,0.95)";
+});
+
+function navigateToExplore() {
+    // 1. Move to the new page with the anchor tag #explore
+    window.location.href = "samp.html";
+}
+</script>
+</body>
+</html>

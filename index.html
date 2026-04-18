@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Parama Pada Vasal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #800000;
+            --gold: #FFD700;
+            --accent: #e91e63;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2000') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        .auth-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 { 
+            font-family: 'Cinzel', serif; 
+            color: var(--gold); 
+            margin-bottom: 10px;
+            font-size: clamp(1.2rem, 5vw, 1.6rem);
+        }
+        .toggle-links { margin-bottom: 20px; }
+        .toggle-links a { color: #fff; text-decoration: none; margin: 0 10px; font-size: 0.9em; opacity: 0.7; }
+        .toggle-links a.active { opacity: 1; border-bottom: 2px solid var(--gold); }
+        
+        form { display: flex; flex-direction: column; gap: 15px; }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1rem;
+            width: 100%;
+            transition: border 0.3s;
+        }
+        input.error-input {
+            border: 2px solid #ff4444;
+        }
+        input.success-input {
+            border: 2px solid #00c853;
+        }
+
+        .error-msg {
+            color: #ff6b6b;
+            font-size: 0.78rem;
+            margin-top: 4px;
+            display: none;
+            text-align: left;
+        }
+        .error-msg.show {
+            display: block;
+        }
+
+        .btn-explore {
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            font-size: 1rem;
+        }
+        .btn-explore:hover { background: #c2185b; transform: scale(1.05); box-shadow: 0 0 15px var(--accent); }
+        .btn-explore:disabled {
+            background: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .hidden { display: none; }
+
+        .name-row { display: flex; gap: 10px; }
+        .name-row .input-group { flex: 1; }
+
+        .success-banner {
+            background: rgba(0, 200, 83, 0.2);
+            border: 1px solid #00c853;
+            color: #00e676;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+            margin-bottom: 5px;
+        }
+        .success-banner.show { display: block; }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 30px 20px; }
+            .name-row { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <h1>Welcome to Parama Pada Vasal</h1>
+    <div class="toggle-links">
+        <a href="#" id="showLogin" class="active">Login</a>
+        <a href="#" id="showReg">Register</a>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" novalidate>
+        <div class="success-banner" id="loginSuccess">✓ Login successful! Redirecting...</div>
+        <div class="name-row">
+            <div class="input-group">
+                <input type="text" id="loginFirst" placeholder="First Name">
+                <span class="error-msg" id="err-loginFirst">First name is required.</span>
+            </div>
+            <div class="input-group">
+                <input type="text" id="loginLast" placeholder="Last Name">
+                <span class="error-msg" id="err-loginLast">Last name is required.</span>
+            </div>
+        </div>
+        <div class="input-group">
+            <input type="email" id="loginEmail" placeholder="Email Address">
+            <span class="error-msg" id="err-loginEmail">Enter a valid email address.</span>
+        </div>
+        <div class="input-group">
+            <input type="password" id="loginPass" placeholder="Password">
+            <span class="error-msg" id="err-loginPass">Password must be at least 6 characters.</span>
+        </div>
+        <button type="submit" class="btn-explore">Explore</button>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form id="regForm" class="hidden" novalidate>
+        <div class="success-banner" id="regSuccess">✓ Registered successfully! Redirecting...</div>
+        <div class="name-row">
+            <div class="input-group">
+                <input type="text" id="regFirst" placeholder="First Name">
+                <span class="error-msg" id="err-regFirst">First name is required.</span>
+            </div>
+            <div class="input-group">
+                <input type="text" id="regLast" placeholder="Last Name">
+                <span class="error-msg" id="err-regLast">Last name is required.</span>
+            </div>
+        </div>
+        <div class="input-group">
+            <input type="email" id="regEmail" placeholder="Email">
+            <span class="error-msg" id="err-regEmail">Enter a valid email address.</span>
+        </div>
+        <div class="input-group">
+            <input type="password" id="regPass" placeholder="Password">
+            <span class="error-msg" id="err-regPass">Password must be at least 6 characters.</span>
+        </div>
+        <div class="input-group">
+            <input type="password" id="regConfirm" placeholder="Confirm Password">
+            <span class="error-msg" id="err-regConfirm">Passwords do not match.</span>
+        </div>
+        <button type="submit" class="btn-explore">Explore</button>
+    </form>
+</div>
+
+<script>
+    // ---------- TOGGLE ----------
+    document.getElementById('showLogin').onclick = (e) => {
+        e.preventDefault();
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('regForm').classList.add('hidden');
+        document.getElementById('showLogin').classList.add('active');
+        document.getElementById('showReg').classList.remove('active');
+        clearForm('loginForm');
+    };
+
+    document.getElementById('showReg').onclick = (e) => {
+        e.preventDefault();
+        document.getElementById('regForm').classList.remove('hidden');
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('showReg').classList.add('active');
+        document.getElementById('showLogin').classList.remove('active');
+        clearForm('regForm');
+    };
+
+    // ---------- HELPERS ----------
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(inputId, errId, message) {
+        const input = document.getElementById(inputId);
+        const err = document.getElementById(errId);
+        input.classList.add('error-input');
+        input.classList.remove('success-input');
+        err.textContent = message;
+        err.classList.add('show');
+        return false;
+    }
+
+    function showSuccess(inputId, errId) {
+        const input = document.getElementById(inputId);
+        const err = document.getElementById(errId);
+        input.classList.remove('error-input');
+        input.classList.add('success-input');
+        err.classList.remove('show');
+        return true;
+    }
+
+    function clearForm(formId) {
+        const form = document.getElementById(formId);
+        form.querySelectorAll('input').forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('error-input', 'success-input');
+        });
+        form.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+        form.querySelectorAll('.success-banner').forEach(e => e.classList.remove('show'));
+    }
+
+    // ---------- LOGIN VALIDATION ----------
+    document.getElementById('loginForm').onsubmit = (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        const first = document.getElementById('loginFirst').value.trim();
+        const last  = document.getElementById('loginLast').value.trim();
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass  = document.getElementById('loginPass').value;
+
+        // First name
+        if (!first) {
+            valid = showError('loginFirst', 'err-loginFirst', 'First name is required.') && valid;
+        } else {
+            showSuccess('loginFirst', 'err-loginFirst');
+        }
+
+        // Last name
+        if (!last) {
+            valid = showError('loginLast', 'err-loginLast', 'Last name is required.') && valid;
+        } else {
+            showSuccess('loginLast', 'err-loginLast');
+        }
+
+        // Email
+        if (!email) {
+            valid = showError('loginEmail', 'err-loginEmail', 'Email is required.') && valid;
+        } else if (!isValidEmail(email)) {
+            valid = showError('loginEmail', 'err-loginEmail', 'Enter a valid email address.') && valid;
+        } else {
+            showSuccess('loginEmail', 'err-loginEmail');
+        }
+
+        // Password
+        if (!pass) {
+            valid = showError('loginPass', 'err-loginPass', 'Password is required.') && valid;
+        } else if (pass.length < 6) {
+            valid = showError('loginPass', 'err-loginPass', 'Password must be at least 6 characters.') && valid;
+        } else {
+            // Check against stored credentials
+            const storedEmail = localStorage.getItem('regEmail');
+            const storedPass  = localStorage.getItem('regPass');
+
+            if (storedEmail && email !== storedEmail) {
+                valid = showError('loginEmail', 'err-loginEmail', 'Email not found. Please register first.') && valid;
+            } else if (storedPass && pass !== storedPass) {
+                valid = showError('loginPass', 'err-loginPass', 'Incorrect password.') && valid;
+            } else {
+                showSuccess('loginPass', 'err-loginPass');
+            }
+        }
+
+        if (valid) {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', `${first} ${last}`);
+            document.getElementById('loginSuccess').classList.add('show');
+            setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+        }
+    };
+
+    // ---------- REGISTER VALIDATION ----------
+    document.getElementById('regForm').onsubmit = (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        const first   = document.getElementById('regFirst').value.trim();
+        const last    = document.getElementById('regLast').value.trim();
+        const email   = document.getElementById('regEmail').value.trim();
+        const pass    = document.getElementById('regPass').value;
+        const confirm = document.getElementById('regConfirm').value;
+
+        // First name
+        if (!first) {
+            valid = showError('regFirst', 'err-regFirst', 'First name is required.') && valid;
+        } else {
+            showSuccess('regFirst', 'err-regFirst');
+        }
+
+        // Last name
+        if (!last) {
+            valid = showError('regLast', 'err-regLast', 'Last name is required.') && valid;
+        } else {
+            showSuccess('regLast', 'err-regLast');
+        }
+
+        // Email
+        if (!email) {
+            valid = showError('regEmail', 'err-regEmail', 'Email is required.') && valid;
+        } else if (!isValidEmail(email)) {
+            valid = showError('regEmail', 'err-regEmail', 'Enter a valid email address.') && valid;
+        } else {
+            showSuccess('regEmail', 'err-regEmail');
+        }
+
+        // Password
+        if (!pass) {
+            valid = showError('regPass', 'err-regPass', 'Password is required.') && valid;
+        } else if (pass.length < 6) {
+            valid = showError('regPass', 'err-regPass', 'Password must be at least 6 characters.') && valid;
+        } else {
+            showSuccess('regPass', 'err-regPass');
+        }
+
+        // Confirm password
+        if (!confirm) {
+            valid = showError('regConfirm', 'err-regConfirm', 'Please confirm your password.') && valid;
+        } else if (pass !== confirm) {
+            valid = showError('regConfirm', 'err-regConfirm', 'Passwords do not match.') && valid;
+        } else {
+            showSuccess('regConfirm', 'err-regConfirm');
+        }
+
+        if (valid) {
+            // Save credentials so login can verify them
+            localStorage.setItem('regEmail', email);
+            localStorage.setItem('regPass', pass);
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', `${first} ${last}`);
+            document.getElementById('regSuccess').classList.add('show');
+            setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+        }
+    };
+
+    // ---------- REAL-TIME CLEAR ERROR ON TYPE ----------
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            input.classList.remove('error-input');
+            const errSpan = document.getElementById('err-' + input.id);
+            if (errSpan) errSpan.classList.remove('show');
+        });
+    });
+</script>
+</body>
+</html>

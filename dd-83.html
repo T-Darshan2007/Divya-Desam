@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiruneeragam Ulagalandha Perumal Temple</title>
+    <link rel="stylesheet" href="style_wi.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <header class="top-nav">
+        <div class="nav-left">
+            <button class="theme-toggle">🌓 Mode</button>
+        </div>
+        <div class="logo-wrapper">
+            <a href="index.html">
+                <img src="logo.jpeg" alt="Logo" class="header-logo">
+            </a>
+        </div>
+        <div class="home-container">
+            <a href="home.html" class="home-link">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </a>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()">☰</button>
+    </header>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-box">
+                <h3>Contents</h3>
+                <ul>
+                    <li class="active"><a href="#title">Overview</a></li>
+                    <li><a href="#legend">Legend</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#festivals">Festivals</a></li>
+                    <li><a href="#religious">Religious importance</a></li>  
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content">
+            <section id="title" class="content-card">
+                <h1 style="color: var(--accent-gold-dark); margin-top: 0;">Thiruneeragam Ulagalandha Perumal Temple</h1>
+                <table class="infobox">
+                    <thead><tr><th colspan="2" class="infobox-title">Temple Details</th></tr></thead>
+                    <tbody>
+                        <tr><td colspan="2" class="infobox-image"><img src="data:image/jpeg;base64,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"></td></tr>
+                        <tr><td class="infobox-label">Deity</td><td class="infobox-data">Trivikraman Perumal</td></tr>
+                        <tr><td class="infobox-label">Location</td><td class="infobox-data">Kanchipuram</td></tr>
+                        <tr><td class="infobox-label">District</td><td class="infobox-data">Kanchipuram</td></tr>
+                        <tr><td class="infobox-label">State</td><td class="infobox-data">Tamil Nadu</td></tr>
+                        <tr><td class="infobox-label">Country</td><td class="infobox-data">India</td></tr>
+                    </tbody>
+                </table>
+
+                <p>Thiruniragam Ulagalandha Perumal Temple is one of the 108 Vaishnava shrines . It is located in the village of Thiruniragam in Kanchipuram district . It is one of the four Divya Desams located inside the Kanchi Ulagalandha Perumal Temple . It is the 83th Divya Desam out of the 108 Divya Desams that have received the auspicious blessings of the Lord .</p>
+
+            </section>
+
+            <section id="legend" class="content-card">
+                <h2>Legend</h2>
+                <p>The Ulagalandha Perumal in this temple is depicted with his right leg resting and his left leg raised, which is a sight to behold. In front of this temple, Anjaneya is seen performing a four-legged ritual with a conch and a chakra in his hands.</p>
+
+            </section>
+
+            <section id="history" class="content-card">
+                <h2>History</h2>
+                <p>No one knows where this "Thiruneeragam" was in the past, which was performed by Thirumangai Azhwar with the first word "Neeragathai" in the song. The Utsavare himself is the one who bestows blessings from the place of the source. Perumal is of the nature of water. He incarnated as a fish in the water. He sits on water and makes it his abode. During the time of the flood, this earth was surrounded by water and floated on it as an eye. Therefore, Thirumangai Azhwar performed the Mangalasasana by saying that Perumal was the one who performed the Mangalasasana. But he did not tell anyone where this place was. When Thirumangai Azhwar came here to perform the Mangalasasana, did these three places come with the "Thiruuragam"? Or did he perform the Mangalasasana in these Divya Desams in different places? Or it has not been discovered under what circumstances these three Divya Desams came here.</p>
+
+            </section>
+            
+            <section id="architecture" class="content-card">
+                <h2>Architecture</h2>
+                <div class="image-grid">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Ulagalantha_perumal_Kanchipuram2.jpg/500px-Ulagalantha_perumal_Kanchipuram2.jpg">
+                </div>
+                <p>The temple is located in central Kanchipuram, a locality in the Central side of Kanchipuram, a South Indian town in the state of Tamil Nadu. The temple has an area of about 60,000 square feet (5,600 m2) and has a three tiered rajagopuram (main towers) with seven kalasas. The temple houses four Divya Desams on its own – they are Tirukkaravanam, Tirukarakam, Tiruürakam, and Tiruneerakam. It is believed that all the shrines were probably separate temples, but the circumstances which lead do these temples getting housed in the Ulagalantha Perumal temple is not known. Thirumangai Alvar has sung praises of all the four temples in a single verse. The temple tank, Naga Tirtham, is located outside the main temple complex.</p>
+                <p>The temple is revered by the verses of Tirumangai Alvar and Thirumaḻisai Alvar. Goddess Lakshmi is worshipped as Amuthavalli (Amirthavalli) and the festival idol of the temple is Vishnu as Loganathan. The image of Ulagalantha Perumal is over 35 ft (11 m) in height depicted with his left leg at a right angle to the body and parallel to the ground. The right leg is seen placed on the head of Mahabali with two fingers on his left hand stretched out referring to the two steps he took to measure the two worlds and the stretched finger on his right hand indicating the question the posted to Mahabali as to where he could place his third step. The roof of the sanctum, the vimana has an elevated roof to accommodate the huge image of the presiding deity</p>
+
+            </section>
+
+            <section id="festivals" class="content-card">
+                <h2>Festivals</h2>
+                <p>The temple priests perform the puja (rituals) during festivals and on a daily basis. As at other Vishnu temples of Tamil Nadu, the priests belong to the Vaishnavaite community, a Brahmin community. The temple rituals are performed six times a day: Ushathkalam at 7 a.m., Kalasanthi at 8:00 a.m., Uchikalam at 12:00 p.m., Sayarakshai at 6:00 p.m., Irandamkalam at 7:00 p.m. and Ardha Jamam at 10:00 p.m. Each ritual has three steps: alangaram (decoration), neivethanam (food offering) and deepa aradanai (waving of lamps) for both Ulagalantha Perumal and Amuthavalli. During the last step of worship, nagaswaram (pipe instrument) and tavil (percussion instrument) are played, religious instructions in the Vedas (sacred text) are recited by priests, and worshippers prostrate themselves in front of the temple mast. There are weekly, monthly and fortnightly rituals performed in the temple. There are two major festivals celebrated in the temple - Brahmotsavam during the Tamil month of Thai (January–February) and Vamana Jayanthi during the Tamil month of Avani (August–September) on Sravanam star.</p>
+
+            </section>
+
+            <section id="religious" class="content-card">
+                <h2>Religious importance</h2>
+                <p>Thirumangaiyazhwar received a song in only one song.</p>
+                <pre>
+                    The river is long and wide      
+                    , the moon is above the moon , the river
+                    is full of pieces
+                    , the water
+                    is warm, the world
+                    is filled with joy, the caravan is in
+                    the valley, the river
+                </pre>
+            </section>
+        
+        </main>
+    </div>
+    <script src="script wi.js"></script>
+</body>
+</html>
